@@ -5,7 +5,7 @@
 
     <groupId>com.github.ecsoya.bear</groupId>
     <artifactId>bear-fast</artifactId>
-    <version>v1.0.0</version>
+    <version>v1.0.1</version>
     <packaging>jar</packaging>
 
     <name>bear-fast</name>
@@ -32,7 +32,7 @@
         <jwt.version>0.9.1</jwt.version>
         <kaptcha.version>2.3.3</kaptcha.version>
         <swagger.version>3.0.0</swagger.version>
-        <poi.version>4.1.2</poi.version>
+        <poi.version>5.2.3</poi.version>
         <oshi.version>6.4.4</oshi.version>
         <velocity.version>2.3</velocity.version>
     </properties>
@@ -89,10 +89,10 @@
             <artifactId>commons-pool2</artifactId>
         </dependency>
 
-        <!-- Mysql驱动包 -->
+        <!-- MariaDB驱动包 -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
             <scope>runtime</scope>
         </dependency>
 

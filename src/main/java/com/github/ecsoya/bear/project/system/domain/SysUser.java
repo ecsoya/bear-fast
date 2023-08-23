@@ -91,6 +91,8 @@ public class SysUser extends BaseEntity {
 	/** 角色ID */
 	private Long roleId;
 
+	private String userType;
+
 	public SysUser() {
 
 	}
@@ -269,5 +271,13 @@ public class SysUser extends BaseEntity {
 				.append("createBy", getCreateBy()).append("createTime", getCreateTime())
 				.append("updateBy", getUpdateBy()).append("updateTime", getUpdateTime()).append("remark", getRemark())
 				.append("dept", getDept()).toString();
+	}
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
 	}
 }

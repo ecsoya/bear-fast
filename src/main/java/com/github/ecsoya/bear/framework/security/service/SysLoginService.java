@@ -53,6 +53,14 @@ public class SysLoginService {
 	@Autowired
 	private ISysConfigService configService;
 
+	public String loginByEmail(String email, String password, String code, String uuid) {
+		SysUser user = userService.selectUserByEmail(email);
+		if (user == null) {
+			throw new UserNotExistsException();
+		}
+		return login(user.getUserName(), password, code, uuid);
+	}
+
 	/**
 	 * 登录验证
 	 * 

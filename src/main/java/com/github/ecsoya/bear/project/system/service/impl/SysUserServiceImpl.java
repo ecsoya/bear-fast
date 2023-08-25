@@ -490,4 +490,12 @@ public class SysUserServiceImpl implements ISysUserService {
 		}
 		return successMsg.toString();
 	}
+
+	@Override
+	public SysUser selectUserByEmail(String email) {
+		if (StringUtils.isEmpty(email)) {
+			return null;
+		}
+		return userMapper.selectUserByEmail(email);
+	}
 }

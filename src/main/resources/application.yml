@@ -133,8 +133,8 @@ xss:
 gen:
   # 作者
   author: angryred@qq.com
-  packageName: com.github.ecsoya.bear
+  packageName: com.meet.celadon.auction.domain
   # 自动去除表前缀，默认是true
-  autoRemovePre: false
+  autoRemovePre: true
   # 表前缀（生成类名不会包含表前缀，多个用逗号分隔）
   tablePrefix: t_

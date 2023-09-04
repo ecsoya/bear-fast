@@ -848,4 +848,22 @@ public class Convert {
 		return head + s.replaceAll("(零.)*零元", "元").replaceFirst("(零.)+", "").replaceAll("(零.)+", "零").replaceAll("^整$",
 				"零元整");
 	}
+
+	public static String arrayToString(Object[] array) {
+		if (array == null || array.length == 0) {
+			return "";
+		}
+		StringBuilder buf = new StringBuilder();
+		for (int i = 0; i < array.length; i++) {
+			Object a = array[i];
+			if (a == null) {
+				continue;
+			}
+			if (buf.length() > 0) {
+				buf.append(",");
+			}
+			buf.append(a);
+		}
+		return buf.toString();
+	}
 }

@@ -1,6 +1,7 @@
 package com.github.ecsoya.bear.framework.security;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -231,5 +232,9 @@ public class LoginUser implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return null;
+	}
+
+	public String getNickName() {
+		return Optional.ofNullable(getUser()).map(t -> t.getNickName()).orElse(null);
 	}
 }

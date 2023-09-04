@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -163,5 +164,17 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		LocalDateTime localDateTime = LocalDateTime.of(temporalAccessor, LocalTime.of(0, 0, 0));
 		ZonedDateTime zdt = localDateTime.atZone(ZoneId.systemDefault());
 		return Date.from(zdt.toInstant());
+	}
+
+	public static Date atHour(Date date, int hour) {
+		if (date == null) {
+			return null;
+		}
+		Calendar instance = Calendar.getInstance();
+		instance.setTime(date);
+		instance.set(Calendar.HOUR_OF_DAY, hour);
+		instance.set(Calendar.MINUTE, 0);
+		instance.set(Calendar.SECOND, 0);
+		return instance.getTime();
 	}
 }

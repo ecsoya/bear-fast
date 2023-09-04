@@ -29,6 +29,9 @@ public class GlobalConfig {
 	/** 获取地址开关 */
 	private static boolean addressEnabled;
 
+	/** FTP路径 */
+	private static String ftpRoot;
+
 	public String getName() {
 		return name;
 	}
@@ -103,5 +106,13 @@ public class GlobalConfig {
 	 */
 	public static String getUploadPath() {
 		return getProfile() + "/upload";
+	}
+
+	public static String getFtpRoot() {
+		return ftpRoot;
+	}
+
+	public void setFtpRoot(String ftpRoot) {
+		GlobalConfig.ftpRoot = ftpRoot;
 	}
 }

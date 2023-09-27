@@ -22,7 +22,7 @@ public class PermissionService {
 	private static final String ALL_PERMISSION = "*:*:*";
 
 	/** 管理员角色权限标识 */
-	private static final String SUPER_ADMIN = "admin";
+//	private static final String SUPER_ADMIN = "admin";
 
 	private static final String ROLE_DELIMETER = ",";
 
@@ -96,7 +96,7 @@ public class PermissionService {
 		}
 		for (SysRole sysRole : loginUser.getUser().getRoles()) {
 			String roleKey = sysRole.getRoleKey();
-			if (SUPER_ADMIN.equals(roleKey) || roleKey.equals(StringUtils.trim(role))) {
+			if (/* SUPER_ADMIN.equals(roleKey) || */ roleKey.equals(StringUtils.trim(role))) {
 				return true;
 			}
 		}

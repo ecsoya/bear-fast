@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 import com.github.ecsoya.bear.common.constant.HttpStatus;
+import com.github.ecsoya.bear.common.utils.MessageUtils;
 import com.github.ecsoya.bear.common.utils.StringUtils;
 
 /**
@@ -61,7 +62,7 @@ public class AjaxResult extends HashMap<String, Object> {
 	 * @return 成功消息
 	 */
 	public static AjaxResult success() {
-		return AjaxResult.success("操作成功");
+		return AjaxResult.success(MessageUtils.message("ajax.success"));
 	}
 
 	/**
@@ -70,7 +71,7 @@ public class AjaxResult extends HashMap<String, Object> {
 	 * @return 成功消息
 	 */
 	public static AjaxResult success(Object data) {
-		return AjaxResult.success("操作成功", data);
+		return AjaxResult.success(MessageUtils.message("ajax.success"), data);
 	}
 
 	/**
@@ -121,7 +122,7 @@ public class AjaxResult extends HashMap<String, Object> {
 	 * @return 错误消息
 	 */
 	public static AjaxResult error() {
-		return AjaxResult.error("操作失败");
+		return AjaxResult.error(MessageUtils.message("ajax.failure"));
 	}
 
 	/**

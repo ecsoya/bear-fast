@@ -156,7 +156,7 @@ public class SysUser extends BaseEntity {
 		this.email = email;
 	}
 
-	@Size(min = 0, max = 11, message = "手机号码长度不能超过11个字符")
+	@Size(min = 0, max = 20, message = "手机号码长度不能超过20个字符")
 	public String getPhonenumber() {
 		return phonenumber;
 	}

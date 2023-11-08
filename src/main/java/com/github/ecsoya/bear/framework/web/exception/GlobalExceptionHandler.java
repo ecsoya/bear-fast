@@ -1,11 +1,16 @@
 package com.github.ecsoya.bear.framework.web.exception;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
@@ -13,7 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import com.github.ecsoya.bear.common.constant.HttpStatus;
+import com.alibaba.fastjson2.JSON;
 import com.github.ecsoya.bear.common.exception.DemoModeException;
 import com.github.ecsoya.bear.common.exception.ServiceException;
 import com.github.ecsoya.bear.common.utils.StringUtils;
@@ -35,7 +40,8 @@ public class GlobalExceptionHandler {
 	public AjaxResult handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request) {
 		String requestURI = request.getRequestURI();
 		log.error("请求地址'{}',权限校验失败'{}'", requestURI, e.getMessage());
-		return AjaxResult.error(HttpStatus.FORBIDDEN, "没有权限，请联系管理员授权");
+		return AjaxResult.error(HttpStatus.FORBIDDEN.value(),
+				org.springframework.http.HttpStatus.FORBIDDEN.getReasonPhrase());
 	}
 
 	/**
@@ -66,7 +72,7 @@ public class GlobalExceptionHandler {
 	public AjaxResult handleMissingPathVariableException(MissingPathVariableException e, HttpServletRequest request) {
 		String requestURI = request.getRequestURI();
 		log.error("请求路径中缺少必需的路径变量'{}',发生系统异常.", requestURI, e);
-		return AjaxResult.error(String.format("请求路径中缺少必需的路径变量[%s]", e.getVariableName()));
+		return AjaxResult.error(String.format("Missing Path[%s]", e.getVariableName()));
 	}
 
 	/**
@@ -77,7 +83,7 @@ public class GlobalExceptionHandler {
 			HttpServletRequest request) {
 		String requestURI = request.getRequestURI();
 		log.error("请求参数类型不匹配'{}',发生系统异常.", requestURI, e);
-		return AjaxResult.error(String.format("请求参数类型不匹配，参数[%s]要求类型为：'%s'，但输入值为：'%s'", e.getName(),
+		return AjaxResult.error(String.format("Type Not Matched, [%s] needs: '%s', but: '%s'", e.getName(),
 				e.getRequiredType().getName(), e.getValue()));
 	}
 
@@ -117,8 +123,13 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public Object handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
 		log.error(e.getMessage(), e);
-		String message = e.getBindingResult().getFieldError().getDefaultMessage();
-		return AjaxResult.error(message);
+		Map<String, String> errors = new HashMap<>();
+		e.getBindingResult().getAllErrors().forEach((error) -> {
+			String fieldName = ((FieldError) error).getField();
+			String errorMessage = error.getDefaultMessage();
+			errors.put(fieldName, errorMessage);
+		});
+		return AjaxResult.error(JSON.toJSONString(errors));
 	}
 
 	/**
@@ -126,6 +137,6 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(DemoModeException.class)
 	public AjaxResult handleDemoModeException(DemoModeException e) {
-		return AjaxResult.error("演示模式，不允许操作");
+		return AjaxResult.error("Not allowed in demo mode");
 	}
 }

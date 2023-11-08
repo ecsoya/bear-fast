@@ -6,12 +6,12 @@ import java.io.Serializable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson2.JSON;
-import com.github.ecsoya.bear.common.constant.HttpStatus;
 import com.github.ecsoya.bear.common.utils.ServletUtils;
 import com.github.ecsoya.bear.common.utils.StringUtils;
 import com.github.ecsoya.bear.framework.web.domain.AjaxResult;
@@ -28,8 +28,8 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint, S
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e)
 			throws IOException {
-		int code = HttpStatus.UNAUTHORIZED;
-		String msg = StringUtils.format("请求访问：{}，认证失败，无法访问系统资源", request.getRequestURI());
-		ServletUtils.renderString(response, JSON.toJSONString(AjaxResult.error(code, msg)));
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		String msg = StringUtils.format("{}: {}", status.getReasonPhrase(), request.getRequestURI());
+		ServletUtils.renderString(response, JSON.toJSONString(AjaxResult.error(status.value(), msg)));
 	}
 }

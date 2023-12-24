@@ -53,7 +53,11 @@ public class SecurityUtils {
 	 **/
 	public static LoginUser getLoginUser() {
 		try {
-			return (LoginUser) getAuthentication().getPrincipal();
+			Object principal = getAuthentication().getPrincipal();
+			if (principal instanceof LoginUser) {
+				return (LoginUser) principal;
+			}
+			return null;
 		} catch (Exception e) {
 			throw new ServiceException("LoginUser", HttpStatus.UNAUTHORIZED);
 		}

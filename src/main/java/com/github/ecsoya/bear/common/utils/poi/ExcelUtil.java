@@ -302,7 +302,19 @@ public class ExcelUtil<T> {
 	 * @return 转换后集合
 	 */
 	public List<T> importExcel(InputStream is, int titleNum) throws Exception {
-		return importExcel(StringUtils.EMPTY, is, titleNum);
+		this.type = Type.IMPORT;
+		this.wb = WorkbookFactory.create(is);
+		List<T> list = new ArrayList<>();
+		int numberOfSheets = this.wb.getNumberOfSheets();
+		for (int i = 0; i < numberOfSheets; i++) {
+			String sheetName = this.wb.getSheetName(i);
+			try {
+				list.addAll(importExcel(sheetName, is, titleNum));
+			} catch (Exception e) {
+				continue;
+			}
+		}
+		return list;
 	}
 
 	/**
@@ -314,8 +326,12 @@ public class ExcelUtil<T> {
 	 * @return 转换后集合
 	 */
 	public List<T> importExcel(String sheetName, InputStream is, int titleNum) throws Exception {
-		this.type = Type.IMPORT;
-		this.wb = WorkbookFactory.create(is);
+		if (this.type == null) {
+			this.type = Type.IMPORT;
+		}
+		if (this.wb == null) {
+			this.wb = WorkbookFactory.create(is);
+		}
 		List<T> list = new ArrayList<T>();
 		// 如果指定sheet名,则取指定sheet中的内容 否则默认指向第1个sheet
 		Sheet sheet = StringUtils.isNotEmpty(sheetName) ? wb.getSheet(sheetName) : wb.getSheetAt(0);
@@ -484,7 +500,7 @@ public class ExcelUtil<T> {
 		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 		response.setCharacterEncoding("utf-8");
 		this.init(list, sheetName, title, Type.EXPORT);
-		exportExcel(response);
+		exportExcel(response, true);
 	}
 
 	/**
@@ -530,7 +546,7 @@ public class ExcelUtil<T> {
 		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 		response.setCharacterEncoding("utf-8");
 		this.init(null, sheetName, title, Type.IMPORT);
-		exportExcel(response);
+		exportExcel(response, true);
 	}
 
 	/**
@@ -538,9 +554,14 @@ public class ExcelUtil<T> {
 	 * 
 	 * @return 结果
 	 */
-	public void exportExcel(HttpServletResponse response) {
+	public void exportExcel(HttpServletResponse response, boolean write) {
 		try {
-			writeSheet();
+			if (write) {
+				writeSheet();
+			} else {
+				response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+				response.setCharacterEncoding("utf-8");
+			}
 			wb.write(response.getOutputStream());
 		} catch (Exception e) {
 			log.error("导出Excel异常{}", e.getMessage());
@@ -1282,10 +1303,15 @@ public class ExcelUtil<T> {
 	 * 创建一个工作簿
 	 */
 	public void createWorkbook() {
-		this.wb = new SXSSFWorkbook(500);
+		if (this.wb == null) {
+			this.wb = new SXSSFWorkbook(500);
+		}
+		int index = this.wb.getNumberOfSheets();
 		this.sheet = wb.createSheet();
-		wb.setSheetName(0, sheetName);
-		this.styles = createStyles(wb);
+		wb.setSheetName(index, sheetName);
+		if (this.styles == null) {
+			this.styles = createStyles(wb);
+		}
 	}
 
 	/**

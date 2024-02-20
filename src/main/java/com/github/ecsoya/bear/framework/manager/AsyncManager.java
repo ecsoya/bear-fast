@@ -4,6 +4,8 @@ import java.util.TimerTask;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
 import com.github.ecsoya.bear.common.utils.Threads;
 import com.github.ecsoya.bear.common.utils.spring.SpringUtils;
 
@@ -22,6 +24,7 @@ public class AsyncManager {
 	 * 异步操作任务调度线程池
 	 */
 	private ScheduledExecutorService executor = SpringUtils.getBean("scheduledExecutorService");
+	private ThreadPoolTaskExecutor taskExecutor = SpringUtils.getBean("threadPoolTaskExecutor");
 
 	/**
 	 * 单例模式
@@ -45,7 +48,7 @@ public class AsyncManager {
 	}
 
 	public void execute(Runnable task) {
-		executor.schedule(task, OPERATE_DELAY_TIME, TimeUnit.MILLISECONDS);
+		taskExecutor.execute(task);
 	}
 
 	/**

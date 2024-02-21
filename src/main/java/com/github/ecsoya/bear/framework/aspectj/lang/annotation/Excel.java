@@ -149,6 +149,9 @@ public @interface Excel {
 	 */
 	public String[] args() default {};
 
+	/** 允许重复 */
+	public boolean unique() default false;
+
 	/**
 	 * 字段类型（0：导出导入；1：仅导出；2：仅导入）
 	 */

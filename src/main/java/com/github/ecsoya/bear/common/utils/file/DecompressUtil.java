@@ -25,6 +25,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.ecsoya.bear.common.utils.StringUtils;
 import com.github.junrar.Archive;
 import com.github.junrar.exception.UnsupportedRarV5Exception;
 import com.github.junrar.rarfile.FileHeader;
@@ -298,13 +299,19 @@ public class DecompressUtil {
 			return false;
 		}
 		try {
-			return decompressZip(zip, dir, "gbk");
-		} catch (Exception e) {
+			return decompressZip(zip, dir, null);
+		} catch (Exception e0) {
+			log.warn("default.zip", e0);
 			try {
-				return decompressZip(zip, dir, "utf-8");
-			} catch (Exception e1) {
-				log.warn("*.zip", e);
-				return false;
+				return decompressZip(zip, dir, "gbk");
+			} catch (Exception e) {
+				log.warn("gbk.zip", e);
+				try {
+					return decompressZip(zip, dir, "utf-8");
+				} catch (Exception e1) {
+					log.warn("utf8.zip", e1);
+					return false;
+				}
 			}
 		}
 	}
@@ -313,7 +320,7 @@ public class DecompressUtil {
 		if (zip == null || !zip.exists() || dir == null) {
 			return false;
 		}
-		try (ZipFile zipFile = new ZipFile(zip, encoding)) {
+		try (ZipFile zipFile = StringUtils.isNotEmpty(encoding) ? new ZipFile(zip) : new ZipFile(zip, encoding)) {
 			if (dir.exists()) {
 				FileUtils.cleanDirectory(dir);
 			}

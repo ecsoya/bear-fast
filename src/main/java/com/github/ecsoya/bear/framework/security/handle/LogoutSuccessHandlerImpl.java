@@ -17,6 +17,7 @@ import com.github.ecsoya.bear.common.utils.ServletUtils;
 import com.github.ecsoya.bear.common.utils.StringUtils;
 import com.github.ecsoya.bear.framework.manager.AsyncManager;
 import com.github.ecsoya.bear.framework.manager.factory.AsyncFactory;
+import com.github.ecsoya.bear.framework.redis.RedisCache;
 import com.github.ecsoya.bear.framework.security.LoginUser;
 import com.github.ecsoya.bear.framework.security.service.TokenService;
 import com.github.ecsoya.bear.framework.web.domain.AjaxResult;
@@ -30,6 +31,8 @@ import com.github.ecsoya.bear.framework.web.domain.AjaxResult;
 public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
 	@Autowired
 	private TokenService tokenService;
+	@Autowired
+	private RedisCache redisCache;
 
 	/**
 	 * 退出处理
@@ -44,6 +47,7 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
 			String userName = loginUser.getUsername();
 			// 删除用户缓存记录
 			tokenService.delLoginUser(loginUser.getToken());
+			redisCache.deleteObject(loginUser.getToken());
 			// 记录用户退出日志
 			AsyncManager.me().execute(AsyncFactory.recordLogininfor(userName, Constants.LOGOUT, "退出成功"));
 		}

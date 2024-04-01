@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.github.ecsoya.bear.common.constant.CacheConstants;
 import com.github.ecsoya.bear.common.constant.Constants;
+import com.github.ecsoya.bear.common.core.text.Convert;
 import com.github.ecsoya.bear.common.utils.ServletUtils;
 import com.github.ecsoya.bear.common.utils.StringUtils;
 import com.github.ecsoya.bear.common.utils.ip.AddressUtils;
@@ -65,6 +66,10 @@ public class TokenService {
 	public LoginUser getLoginUser(HttpServletRequest request) {
 		// 获取请求携带的令牌
 		String token = getToken(request);
+		return getLoginUser(token);
+	}
+
+	public LoginUser getLoginUser(String token) {
 		if (StringUtils.isNotEmpty(token)) {
 			try {
 				Claims claims = parseToken(token);
@@ -113,6 +118,7 @@ public class TokenService {
 
 		Map<String, Object> claims = new HashMap<>();
 		claims.put(Constants.LOGIN_USER_KEY, token);
+		claims.put("userId", loginUser.getUserId());
 		return createToken(claims);
 	}
 
@@ -187,6 +193,15 @@ public class TokenService {
 	public String getUsernameFromToken(String token) {
 		Claims claims = parseToken(token);
 		return claims.getSubject();
+	}
+
+	public Long getUserIdFromToken(String token) {
+		try {
+			Claims claims = parseToken(token);
+			return Convert.toLong(claims.get("userId"));
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	/**

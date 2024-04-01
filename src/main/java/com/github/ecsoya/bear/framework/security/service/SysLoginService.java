@@ -101,7 +101,9 @@ public class SysLoginService {
 		LoginUser loginUser = (LoginUser) authentication.getPrincipal();
 		recordLoginInfo(loginUser.getUserId());
 		// 生成token
-		return tokenService.createToken(loginUser);
+		String token = tokenService.createToken(loginUser);
+		redisCache.setCacheObject(token, loginUser.getUserId());
+		return token;
 	}
 
 	/**

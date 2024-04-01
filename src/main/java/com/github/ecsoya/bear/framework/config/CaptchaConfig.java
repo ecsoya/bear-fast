@@ -66,9 +66,9 @@ public class CaptchaConfig {
 		// 是否有边框 默认为true 我们可以自己设置yes，no
 		properties.setProperty(KAPTCHA_BORDER, "yes");
 		// 边框颜色 默认为Color.BLACK
-		properties.setProperty(KAPTCHA_BORDER_COLOR, "105,179,90");
+		properties.setProperty(KAPTCHA_BORDER_COLOR, "220,222,229");
 		// 验证码文本字符颜色 默认为Color.BLACK
-		properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_COLOR, "blue");
+		properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_COLOR, "64,158,255");
 		// 验证码图片宽度 默认为200
 		properties.setProperty(KAPTCHA_IMAGE_WIDTH, "160");
 		// 验证码图片高度 默认为50

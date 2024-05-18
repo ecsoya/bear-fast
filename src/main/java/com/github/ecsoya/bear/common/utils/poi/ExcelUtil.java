@@ -620,6 +620,7 @@ public class ExcelUtil<T> {
 			if (Type.EXPORT.equals(type)) {
 				fillExcelData(index, row);
 				addStatisticsRow();
+				sheet.createFreezePane(0, 1);
 			}
 		}
 	}
@@ -889,7 +890,10 @@ public class ExcelUtil<T> {
 			// 设置列宽
 			sheet.setColumnWidth(column, (int) ((attr.width() + 0.72) * 256));
 		}
-		if (StringUtils.isNotEmpty(attr.prompt()) || attr.combo().length > 0) {
+
+		if (attr.unique()) {
+			setUniqueDataValidation(attr, row, column);
+		} else if (StringUtils.isNotEmpty(attr.prompt()) || attr.combo().length > 0) {
 			if (attr.combo().length > 15 || StringUtils.join(attr.combo()).length() > 255) {
 				// 如果下拉数大于15或字符串长度大于255，则使用一个新sheet存储，避免生成的模板下拉值获取不到
 				setXSSFValidationWithHidden(sheet, attr.combo(), attr.prompt(), 1, 100, column, column);
@@ -898,6 +902,32 @@ public class ExcelUtil<T> {
 				setPromptOrValidation(sheet, attr.combo(), attr.prompt(), 1, 100, column, column);
 			}
 		}
+	}
+
+	private void setUniqueDataValidation(Excel attr, Row row, int column) {
+		DataValidationHelper helper = sheet.getDataValidationHelper();
+		String columnName = FormulaHelper.getColumnName(column);
+		String formula = StringUtils.format("COUNTIF(${}:${},${}1)=1", columnName, columnName, columnName);
+		DataValidationConstraint constraint = helper.createCustomConstraint(formula);
+		CellRangeAddressList addressList = new CellRangeAddressList(0, 500, column, column); // 设置验证的单元格范围
+		DataValidation dataValidation = helper.createValidation(constraint, addressList);
+		String prompt = attr.prompt();
+		if (StringUtils.isNotEmpty(prompt)) {
+			// 如果设置了提示信息则鼠标放上去提示
+			dataValidation.createPromptBox(attr.name(), prompt);
+			dataValidation.setShowPromptBox(true);
+			dataValidation.createErrorBox(attr.name(), prompt);
+			dataValidation.setShowErrorBox(true);
+		}
+		// 处理Excel兼容性问题
+		if (dataValidation instanceof XSSFDataValidation) {
+			dataValidation.setSuppressDropDownArrow(true);
+			dataValidation.setShowErrorBox(true);
+		} else {
+			dataValidation.setSuppressDropDownArrow(false);
+		}
+
+		sheet.addValidationData(dataValidation);
 	}
 
 	/**

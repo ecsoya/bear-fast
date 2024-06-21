@@ -1,5 +1,7 @@
 package com.github.ecsoya.bear.framework.security;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * 用户登录对象
  * 
@@ -9,11 +11,13 @@ public class LoginBody {
 	/**
 	 * 用户名
 	 */
+	@NotNull
 	private String username;
 
 	/**
 	 * 用户密码
 	 */
+	@NotNull
 	private String password;
 
 	/**

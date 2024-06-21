@@ -103,6 +103,7 @@ public class SysLoginService {
 		// 生成token
 		String token = tokenService.createToken(loginUser);
 		redisCache.setCacheObject(token, loginUser.getUserId());
+		tokenService.bindToken(loginUser.getUserId(), token);
 		return token;
 	}
 

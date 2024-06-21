@@ -53,7 +53,11 @@ public class SecurityUtils {
 	 **/
 	public static LoginUser getLoginUser() {
 		try {
-			Object principal = getAuthentication().getPrincipal();
+			Authentication authentication = getAuthentication();
+			if (authentication == null) {
+				throw new ServiceException("LoginUser", HttpStatus.UNAUTHORIZED);
+			}
+			Object principal = authentication.getPrincipal();
 			if (principal instanceof LoginUser) {
 				return (LoginUser) principal;
 			}
@@ -102,4 +106,5 @@ public class SecurityUtils {
 	public static boolean isAdmin(Long userId) {
 		return userId != null && 1L == userId;
 	}
+
 }

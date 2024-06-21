@@ -809,8 +809,12 @@ public class ExcelUtil<T> {
 		// 写入列信息
 		cell.setCellValue(attr.name());
 		setDataValidation(attr, row, column);
-		cell.setCellStyle(
-				styles.get(StringUtils.format("header_{}_{}", attr.headerColor(), attr.headerBackgroundColor())));
+		CellStyle style = styles
+				.get(StringUtils.format("header_{}_{}", attr.headerColor(), attr.headerBackgroundColor()));
+		if (style != null && attr.align() != null) {
+			style.setAlignment(attr.align());
+		}
+		cell.setCellStyle(style);
 		if (isSubList()) {
 			// 填充默认样式，防止合并单元格样式失效
 			sheet.setDefaultColumnStyle(column, styles

@@ -35,6 +35,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
  */
 @Component
 public class TokenService {
+	private static final String LOGIN_USER_ID = "userId";
+
 	private static final Logger log = LoggerFactory.getLogger(TokenService.class);
 
 	// 令牌自定义标识
@@ -90,6 +92,7 @@ public class TokenService {
 	 */
 	public void setLoginUser(LoginUser loginUser) {
 		if (StringUtils.isNotNull(loginUser) && StringUtils.isNotEmpty(loginUser.getToken())) {
+			System.out.println("Refresh:" + loginUser.getToken());
 			refreshToken(loginUser);
 		}
 	}
@@ -97,11 +100,40 @@ public class TokenService {
 	/**
 	 * 删除用户身份信息
 	 */
+	public void delLoginUser(LoginUser user) {
+		if (user == null) {
+			return;
+		}
+		removeToken(user.getUserId());
+		delLoginUser(user.getToken());
+	}
+
 	public void delLoginUser(String token) {
 		if (StringUtils.isNotEmpty(token)) {
 			String userKey = getTokenKey(token);
 			redisCache.deleteObject(userKey);
 		}
+	}
+
+	public void removeToken(Long userId) {
+		String key = getUserIdKey(userId);
+		String token = redisCache.getCacheObject(key);
+		if (StringUtils.isNotEmpty(token)) {
+			LoginUser user = getLoginUser(token);
+			if (user != null) {
+				delLoginUser(user.getToken());
+			}
+		}
+		redisCache.deleteObject(key);
+	}
+
+	private String getUserIdKey(Long userId) {
+		return String.format("login_user_id_token:%s", userId);
+	}
+
+	public void bindToken(Long userId, String token) {
+		String key = getUserIdKey(userId);
+		redisCache.setCacheObject(key, token, expireTime, TimeUnit.MINUTES);
 	}
 
 	/**
@@ -118,7 +150,7 @@ public class TokenService {
 
 		Map<String, Object> claims = new HashMap<>();
 		claims.put(Constants.LOGIN_USER_KEY, token);
-		claims.put("userId", loginUser.getUserId());
+		claims.put(LOGIN_USER_ID, loginUser.getUserId());
 		return createToken(claims);
 	}
 
@@ -198,7 +230,7 @@ public class TokenService {
 	public Long getUserIdFromToken(String token) {
 		try {
 			Claims claims = parseToken(token);
-			return Convert.toLong(claims.get("userId"));
+			return Convert.toLong(claims.get(LOGIN_USER_ID));
 		} catch (Exception e) {
 			return null;
 		}
@@ -210,7 +242,7 @@ public class TokenService {
 	 * @param request
 	 * @return token
 	 */
-	private String getToken(HttpServletRequest request) {
+	public String getToken(HttpServletRequest request) {
 		String token = request.getHeader(header);
 		if (StringUtils.isNotEmpty(token) && token.startsWith(Constants.TOKEN_PREFIX)) {
 			token = token.replace(Constants.TOKEN_PREFIX, "");

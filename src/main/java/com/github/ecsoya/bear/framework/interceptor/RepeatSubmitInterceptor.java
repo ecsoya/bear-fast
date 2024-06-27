@@ -10,7 +10,9 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.alibaba.fastjson2.JSON;
+import com.github.ecsoya.bear.common.utils.MessageUtils;
 import com.github.ecsoya.bear.common.utils.ServletUtils;
+import com.github.ecsoya.bear.common.utils.StringUtils;
 import com.github.ecsoya.bear.framework.interceptor.annotation.RepeatSubmit;
 import com.github.ecsoya.bear.framework.web.domain.AjaxResult;
 
@@ -30,7 +32,9 @@ public abstract class RepeatSubmitInterceptor implements HandlerInterceptor {
 			RepeatSubmit annotation = method.getAnnotation(RepeatSubmit.class);
 			if (annotation != null) {
 				if (this.isRepeatSubmit(request, annotation)) {
-					AjaxResult ajaxResult = AjaxResult.error(annotation.message());
+					String msg = StringUtils.isEmpty(annotation.message()) ? MessageUtils.message("repeat.submit")
+							: annotation.message();
+					AjaxResult ajaxResult = AjaxResult.error(msg);
 					ServletUtils.renderString(response, JSON.toJSONString(ajaxResult));
 					return false;
 				}

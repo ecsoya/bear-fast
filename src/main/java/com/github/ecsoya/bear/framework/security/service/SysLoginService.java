@@ -58,7 +58,19 @@ public class SysLoginService {
 		if (user == null) {
 			throw new UserNotExistsException();
 		}
-		return login(user.getUserName(), password, code, uuid);
+		String oldToken = tokenService.getTokenByUserId(user.getUserId());
+		String newToken = login(user.getUserName(), password, code, uuid);
+		try {
+			if (oldToken != null && !oldToken.equals(newToken)) {
+				LoginUser loginUser = tokenService.getLoginUser(oldToken);
+				if (loginUser != null) {
+					tokenService.delLoginUser(loginUser.getToken());
+				}
+			}
+		} catch (Exception e) {
+			// Ignored
+		}
+		return newToken;
 	}
 
 	/**

@@ -127,6 +127,14 @@ public class TokenService {
 		redisCache.deleteObject(key);
 	}
 
+	public String getTokenByUserId(Long userId) {
+		if (userId == null) {
+			return null;
+		}
+		String key = getUserIdKey(userId);
+		return redisCache.getCacheObject(key);
+	}
+
 	private String getUserIdKey(Long userId) {
 		return String.format("login_user_id_token:%s", userId);
 	}

@@ -30,6 +30,8 @@ public class LoginBody {
 	 */
 	private String uuid;
 
+	private String unblock;
+
 	public String getUsername() {
 		return username;
 	}
@@ -60,5 +62,13 @@ public class LoginBody {
 
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
+	}
+
+	public String getUnblock() {
+		return unblock;
+	}
+
+	public void setUnblock(String unblock) {
+		this.unblock = unblock;
 	}
 }

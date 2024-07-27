@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import com.github.ecsoya.bear.common.constant.CacheConstants;
 import com.github.ecsoya.bear.common.constant.Constants;
-import com.github.ecsoya.bear.common.constant.UserConstants;
 import com.github.ecsoya.bear.common.exception.ServiceException;
 import com.github.ecsoya.bear.common.exception.user.BlackListException;
 import com.github.ecsoya.bear.common.exception.user.CaptchaException;
@@ -53,13 +52,16 @@ public class SysLoginService {
 	@Autowired
 	private ISysConfigService configService;
 
-	public String loginByEmail(String email, String password, String code, String uuid) {
+	@Autowired
+	private SysPasswordService passwordService;
+
+	public String loginByEmail(String email, String password, String code, String uuid, String unblock) {
 		SysUser user = userService.selectUserByEmail(email);
 		if (user == null) {
 			throw new UserNotExistsException();
 		}
 		String oldToken = tokenService.getTokenByUserId(user.getUserId());
-		String newToken = login(user.getUserName(), password, code, uuid);
+		String newToken = login(user.getUserName(), password, code, uuid, unblock);
 		try {
 			if (oldToken != null && !oldToken.equals(newToken)) {
 				LoginUser loginUser = tokenService.getLoginUser(oldToken);
@@ -82,7 +84,10 @@ public class SysLoginService {
 	 * @param uuid     唯一标识
 	 * @return 结果
 	 */
-	public String login(String username, String password, String code, String uuid) {
+	public String login(String username, String password, String code, String uuid, String unblock) {
+		if (StringUtils.isNotEmpty(unblock)) {
+			passwordService.unblockUser(unblock);
+		}
 		// 验证码校验
 		validateCaptcha(username, code, uuid);
 		// 登录前置校验
@@ -160,19 +165,19 @@ public class SysLoginService {
 			throw new UserNotExistsException();
 		}
 		// 密码如果不在指定范围内 错误
-		if (password.length() < UserConstants.PASSWORD_MIN_LENGTH
-				|| password.length() > UserConstants.PASSWORD_MAX_LENGTH) {
-			AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL,
-					MessageUtils.message("user.password.not.match")));
-			throw new UserPasswordNotMatchException();
-		}
+//		if (password.length() < UserConstants.PASSWORD_MIN_LENGTH
+//				|| password.length() > UserConstants.PASSWORD_MAX_LENGTH) {
+//			AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL,
+//					MessageUtils.message("user.password.not.match")));
+//			throw new UserPasswordNotMatchException();
+//		}
 		// 用户名不在指定范围内 错误
-		if (username.length() < UserConstants.USERNAME_MIN_LENGTH
-				|| username.length() > UserConstants.USERNAME_MAX_LENGTH) {
-			AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL,
-					MessageUtils.message("user.password.not.match")));
-			throw new UserPasswordNotMatchException();
-		}
+//		if (username.length() < UserConstants.USERNAME_MIN_LENGTH
+//				|| username.length() > UserConstants.USERNAME_MAX_LENGTH) {
+//			AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL,
+//					MessageUtils.message("user.password.not.match")));
+//			throw new UserPasswordNotMatchException();
+//		}
 		// IP黑名单校验
 		String blackStr = configService.selectConfigByKey("sys.login.blackIPList");
 		if (IpUtils.isMatchedIp(blackStr, IpUtils.getIpAddr())) {

@@ -2,6 +2,7 @@ package com.github.ecsoya.bear.project.system.service.impl;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
@@ -52,6 +53,16 @@ public class SysConfigServiceImpl implements ISysConfigService {
 		return configMapper.selectConfig(config);
 	}
 
+	@Override
+	public SysConfig selectConfigByKey(String configKey) {
+		if (StringUtils.isEmpty(configKey)) {
+			return null;
+		}
+		SysConfig config = new SysConfig();
+		config.setConfigKey(configKey);
+		return configMapper.selectConfig(config);
+	}
+
 	/**
 	 * 根据键名查询参数配置信息
 	 * 
@@ -59,7 +70,7 @@ public class SysConfigServiceImpl implements ISysConfigService {
 	 * @return 参数键值
 	 */
 	@Override
-	public String selectConfigByKey(String configKey) {
+	public String selectConfigValueByKey(String configKey) {
 		String configValue = Convert.toStr(redisCache.getCacheObject(getCacheKey(configKey)));
 		if (StringUtils.isNotEmpty(configValue)) {
 			return configValue;
@@ -81,7 +92,7 @@ public class SysConfigServiceImpl implements ISysConfigService {
 	 */
 	@Override
 	public boolean selectCaptchaEnabled() {
-		String captchaEnabled = selectConfigByKey("sys.account.captchaEnabled");
+		String captchaEnabled = selectConfigValueByKey("sys.account.captchaEnabled");
 		if (StringUtils.isEmpty(captchaEnabled)) {
 			return true;
 		}
@@ -132,6 +143,23 @@ public class SysConfigServiceImpl implements ISysConfigService {
 			redisCache.setCacheObject(getCacheKey(config.getConfigKey()), config.getConfigValue());
 		}
 		return row;
+	}
+
+	@Override
+	public int updateConfig(String configKey, Object configValue) {
+		if (StringUtils.isEmpty(configKey)) {
+			return 0;
+		}
+		SysConfig config = selectConfigByKey(configKey);
+		if (config != null) {
+			config.setConfigValue(Optional.ofNullable(configValue).map(v -> v.toString()).orElse(""));
+			return updateConfig(config);
+		} else {
+			config = new SysConfig();
+			config.setConfigKey(configKey);
+			config.setConfigValue(Optional.ofNullable(configValue).map(v -> v.toString()).orElse(""));
+			return insertConfig(config);
+		}
 	}
 
 	/**

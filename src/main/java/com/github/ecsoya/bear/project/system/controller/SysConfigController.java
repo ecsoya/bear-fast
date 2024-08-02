@@ -70,7 +70,7 @@ public class SysConfigController extends BaseController {
 	 */
 	@GetMapping(value = "/configKey/{configKey}")
 	public AjaxResult getConfigKey(@PathVariable String configKey) {
-		return success(configService.selectConfigByKey(configKey));
+		return success(configService.selectConfigValueByKey(configKey));
 	}
 
 	/**

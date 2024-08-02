@@ -18,13 +18,15 @@ public interface ISysConfigService {
 	 */
 	public SysConfig selectConfigById(Long configId);
 
+	public SysConfig selectConfigByKey(String configKey);
+
 	/**
 	 * 根据键名查询参数配置信息
 	 * 
 	 * @param configKey 参数键名
 	 * @return 参数键值
 	 */
-	public String selectConfigByKey(String configKey);
+	public String selectConfigValueByKey(String configKey);
 
 	/**
 	 * 获取验证码开关
@@ -56,6 +58,8 @@ public interface ISysConfigService {
 	 * @return 结果
 	 */
 	public int updateConfig(SysConfig config);
+
+	public int updateConfig(String configKey, Object configValue);
 
 	/**
 	 * 批量删除参数信息

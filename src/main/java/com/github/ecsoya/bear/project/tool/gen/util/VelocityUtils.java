@@ -177,6 +177,7 @@ public class VelocityUtils {
 			fileName = StringUtils.format("{}/{}Mapper.xml", mybatisPath, className);
 		} else if (template.contains("sql.vm")) {
 			fileName = businessName + "Menu.sql";
+			fileName = StringUtils.format("{}_{}Menu.sql", moduleName, businessName);
 		} else if (template.contains("api.js.vm")) {
 			fileName = StringUtils.format("{}/api/{}/{}.js", vuePath, moduleName, businessName);
 		} else if (template.contains("index.vue.vm")) {

@@ -450,7 +450,7 @@ public class SysUserServiceImpl implements ISysUserService {
 		int failureNum = 0;
 		StringBuilder successMsg = new StringBuilder();
 		StringBuilder failureMsg = new StringBuilder();
-		String password = configService.selectConfigByKey("sys.user.initPassword");
+		String password = configService.selectConfigValueByKey("sys.user.initPassword");
 		for (SysUser user : userList) {
 			try {
 				// 验证是否存在这个用户

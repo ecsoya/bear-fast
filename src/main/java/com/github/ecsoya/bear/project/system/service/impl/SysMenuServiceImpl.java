@@ -148,11 +148,15 @@ public class SysMenuServiceImpl implements ISysMenuService {
 	 */
 	@Override
 	public List<RouterVo> buildMenus(List<SysMenu> menus) {
+		return buildMenus(null, menus);
+	}
+
+	private List<RouterVo> buildMenus(SysMenu parent, List<SysMenu> menus) {
 		List<RouterVo> routers = new LinkedList<RouterVo>();
 		for (SysMenu menu : menus) {
 			RouterVo router = new RouterVo();
 			router.setHidden("1".equals(menu.getVisible()));
-			router.setName(getRouteName(menu));
+			router.setName(getRouteName(parent, menu));
 			router.setPath(getRouterPath(menu));
 			router.setComponent(getComponent(menu));
 			router.setQuery(menu.getQuery());
@@ -162,14 +166,14 @@ public class SysMenuServiceImpl implements ISysMenuService {
 			if (!cMenus.isEmpty() && cMenus.size() > 0 && UserConstants.TYPE_DIR.equals(menu.getMenuType())) {
 				router.setAlwaysShow(true);
 				router.setRedirect("noRedirect");
-				router.setChildren(buildMenus(cMenus));
+				router.setChildren(buildMenus(menu, cMenus));
 			} else if (isMenuFrame(menu)) {
 				router.setMeta(null);
 				List<RouterVo> childrenList = new ArrayList<RouterVo>();
 				RouterVo children = new RouterVo();
 				children.setPath(menu.getPath());
 				children.setComponent(menu.getComponent());
-				children.setName(StringUtils.capitalize(menu.getPath()));
+				children.setName(getRouteName(parent, menu));
 				children.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(),
 						StringUtils.equals("1", menu.getIsCache()), menu.getPath()));
 				children.setQuery(menu.getQuery());
@@ -322,11 +326,13 @@ public class SysMenuServiceImpl implements ISysMenuService {
 	 * @param menu 菜单信息
 	 * @return 路由名称
 	 */
-	public String getRouteName(SysMenu menu) {
-		String routerName = StringUtils.capitalize(menu.getPath());
-		// 非外链并且是一级目录（类型为目录）
+	public String getRouteName(SysMenu parent, SysMenu menu) {
 		if (isMenuFrame(menu)) {
-			routerName = StringUtils.EMPTY;
+			return StringUtils.EMPTY;
+		}
+		String routerName = StringUtils.capitalize(menu.getPath());
+		if (parent != null && StringUtils.isNotEmpty(parent.getPath()) && !"#".equals(parent.getPath())) {
+			routerName = StringUtils.capitalize(parent.getPath()) + routerName;
 		}
 		return routerName;
 	}

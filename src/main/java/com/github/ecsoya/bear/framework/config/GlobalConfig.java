@@ -32,6 +32,9 @@ public class GlobalConfig {
 	/** FTP路径 */
 	private static String ftpRoot;
 
+	/** Check allowed before upload */
+	private static boolean uploadCheck;
+
 	public String getName() {
 		return name;
 	}
@@ -114,5 +117,13 @@ public class GlobalConfig {
 
 	public void setFtpRoot(String ftpRoot) {
 		GlobalConfig.ftpRoot = ftpRoot;
+	}
+
+	public static boolean isUploadCheck() {
+		return uploadCheck;
+	}
+
+	public void setUploadCheck(boolean uploadCheck) {
+		GlobalConfig.uploadCheck = uploadCheck;
 	}
 }

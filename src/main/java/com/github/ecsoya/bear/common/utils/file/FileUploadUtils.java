@@ -148,23 +148,25 @@ public class FileUploadUtils {
 			throw new FileSizeLimitExceededException(DEFAULT_MAX_SIZE / 1024 / 1024);
 		}
 
-		String fileName = file.getOriginalFilename();
-		String extension = getExtension(file);
-		if (allowedExtension != null && !isAllowedExtension(extension, allowedExtension)) {
-			if (allowedExtension == MimeTypeUtils.IMAGE_EXTENSION) {
-				throw new InvalidExtensionException.InvalidImageExtensionException(allowedExtension, extension,
-						fileName);
-			} else if (allowedExtension == MimeTypeUtils.FLASH_EXTENSION) {
-				throw new InvalidExtensionException.InvalidFlashExtensionException(allowedExtension, extension,
-						fileName);
-			} else if (allowedExtension == MimeTypeUtils.MEDIA_EXTENSION) {
-				throw new InvalidExtensionException.InvalidMediaExtensionException(allowedExtension, extension,
-						fileName);
-			} else if (allowedExtension == MimeTypeUtils.VIDEO_EXTENSION) {
-				throw new InvalidExtensionException.InvalidVideoExtensionException(allowedExtension, extension,
-						fileName);
-			} else {
-				throw new InvalidExtensionException(allowedExtension, extension, fileName);
+		if (GlobalConfig.isUploadCheck()) {
+			String fileName = file.getOriginalFilename();
+			String extension = getExtension(file);
+			if (allowedExtension != null && !isAllowedExtension(extension, allowedExtension)) {
+				if (allowedExtension == MimeTypeUtils.IMAGE_EXTENSION) {
+					throw new InvalidExtensionException.InvalidImageExtensionException(allowedExtension, extension,
+							fileName);
+				} else if (allowedExtension == MimeTypeUtils.FLASH_EXTENSION) {
+					throw new InvalidExtensionException.InvalidFlashExtensionException(allowedExtension, extension,
+							fileName);
+				} else if (allowedExtension == MimeTypeUtils.MEDIA_EXTENSION) {
+					throw new InvalidExtensionException.InvalidMediaExtensionException(allowedExtension, extension,
+							fileName);
+				} else if (allowedExtension == MimeTypeUtils.VIDEO_EXTENSION) {
+					throw new InvalidExtensionException.InvalidVideoExtensionException(allowedExtension, extension,
+							fileName);
+				} else {
+					throw new InvalidExtensionException(allowedExtension, extension, fileName);
+				}
 			}
 		}
 	}

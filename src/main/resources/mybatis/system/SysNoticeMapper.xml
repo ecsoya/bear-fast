@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectNoticeList" parameterType="SysNotice" resultMap="SysNoticeResult">
         <include refid="selectNoticeVo"/>
-        <where>
+        where status ='0'
 			<if test="noticeTitle != null and noticeTitle != ''">
 				AND notice_title like concat('%', #{noticeTitle}, '%')
 			</if>
@@ -39,7 +39,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="createBy != null and createBy != ''">
 				AND create_by like concat('%', #{createBy}, '%')
 			</if>
-		</where>
     </select>
     
     <insert id="insertNotice" parameterType="SysNotice">
@@ -76,11 +75,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 	
     <delete id="deleteNoticeById" parameterType="Long">
-        delete from sys_notice where notice_id = #{noticeId}
+        update sys_notice set status='1' where notice_id = #{noticeId}
     </delete>
     
     <delete id="deleteNoticeByIds" parameterType="Long">
-        delete from sys_notice where notice_id in 
+        update sys_notice set status='1' where notice_id in 
         <foreach item="noticeId" collection="array" open="(" separator="," close=")">
             #{noticeId}
         </foreach>

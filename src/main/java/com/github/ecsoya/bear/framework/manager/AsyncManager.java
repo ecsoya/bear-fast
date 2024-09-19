@@ -1,10 +1,9 @@
 package com.github.ecsoya.bear.framework.manager;
 
 import java.util.TimerTask;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.github.ecsoya.bear.common.utils.Threads;
 import com.github.ecsoya.bear.common.utils.spring.SpringUtils;
@@ -24,7 +23,6 @@ public class AsyncManager {
 	 * 异步操作任务调度线程池
 	 */
 	private ScheduledExecutorService executor = SpringUtils.getBean("scheduledExecutorService");
-	private ThreadPoolTaskExecutor taskExecutor = SpringUtils.getBean("threadPoolTaskExecutor");
 
 	/**
 	 * 单例模式
@@ -44,11 +42,19 @@ public class AsyncManager {
 	 * @param task 任务
 	 */
 	public void execute(TimerTask task) {
-		executor.schedule(task, OPERATE_DELAY_TIME, TimeUnit.MILLISECONDS);
+		if (executor.isShutdown() || executor.isTerminated()) {
+			CompletableFuture.runAsync(task);
+		} else {
+			executor.schedule(task, OPERATE_DELAY_TIME, TimeUnit.MILLISECONDS);
+		}
 	}
 
 	public void execute(Runnable task) {
-		taskExecutor.execute(task);
+		if (executor.isShutdown() || executor.isTerminated()) {
+			CompletableFuture.runAsync(task);
+		} else {
+			executor.schedule(task, OPERATE_DELAY_TIME, TimeUnit.MILLISECONDS);
+		}
 	}
 
 	/**

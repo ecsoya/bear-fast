@@ -5,6 +5,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
 import com.github.ecsoya.bear.common.utils.Threads;
 import com.github.ecsoya.bear.common.utils.spring.SpringUtils;
 
@@ -14,6 +18,7 @@ import com.github.ecsoya.bear.common.utils.spring.SpringUtils;
  * @author angryred
  */
 public class AsyncManager {
+	private static final Logger log = LoggerFactory.getLogger("async");
 	/**
 	 * 操作延迟10毫秒
 	 */
@@ -23,6 +28,7 @@ public class AsyncManager {
 	 * 异步操作任务调度线程池
 	 */
 	private ScheduledExecutorService executor = SpringUtils.getBean("scheduledExecutorService");
+	private ThreadPoolTaskExecutor threadPoolExecutor = SpringUtils.getBean("threadPoolTaskExecutor");
 
 	/**
 	 * 单例模式
@@ -41,19 +47,33 @@ public class AsyncManager {
 	 * 
 	 * @param task 任务
 	 */
-	public void execute(TimerTask task) {
+	public void schedule(TimerTask task) {
+		log.info("async schedule...");
 		if (executor.isShutdown() || executor.isTerminated()) {
 			CompletableFuture.runAsync(task);
 		} else {
-			executor.schedule(task, OPERATE_DELAY_TIME, TimeUnit.MILLISECONDS);
+			try {
+				executor.schedule(task, OPERATE_DELAY_TIME, TimeUnit.MILLISECONDS);
+			} catch (Exception e) {
+				CompletableFuture.runAsync(task);
+			}
 		}
 	}
 
 	public void execute(Runnable task) {
-		if (executor.isShutdown() || executor.isTerminated()) {
+		long now = System.currentTimeMillis();
+		log.info("async execute(" + now + ")");
+		try {
+			// 调用线程池操作，线程不足会抛出异常，然后让Java接手执行。
+			Runnable wrapper = () -> {
+				log.info("async execute(" + now + ") started");
+				task.run();
+				log.info("async execute(" + now + ") finished, used");
+			};
+			threadPoolExecutor.execute(wrapper);
+		} catch (Exception e) {
+			log.error("async execute(" + now + ") failed", e);
 			CompletableFuture.runAsync(task);
-		} else {
-			executor.schedule(task, OPERATE_DELAY_TIME, TimeUnit.MILLISECONDS);
 		}
 	}
 
@@ -62,5 +82,6 @@ public class AsyncManager {
 	 */
 	public void shutdown() {
 		Threads.shutdownAndAwaitTermination(executor);
+		threadPoolExecutor.shutdown();
 	}
 }

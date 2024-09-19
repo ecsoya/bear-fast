@@ -109,7 +109,7 @@ public class LogAspect {
 			// 设置消耗时间
 			operLog.setCostTime(System.currentTimeMillis() - TIME_THREADLOCAL.get());
 			// 保存数据库
-			AsyncManager.me().execute(AsyncFactory.recordOper(operLog));
+			AsyncManager.me().schedule(AsyncFactory.recordOper(operLog));
 		} catch (Exception exp) {
 			// 记录本地异常日志
 			log.warn("异常信息:{}", exp.getMessage());

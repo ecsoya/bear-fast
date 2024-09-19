@@ -49,7 +49,7 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
 			tokenService.delLoginUser(loginUser);
 			redisCache.deleteObject(loginUser.getToken());
 			// 记录用户退出日志
-			AsyncManager.me().execute(AsyncFactory.recordLogininfor(userName, Constants.LOGOUT, "退出成功"));
+			AsyncManager.me().schedule(AsyncFactory.recordLogininfor(userName, Constants.LOGOUT, "退出成功"));
 		}
 		ServletUtils.renderString(response, JSON.toJSONString(AjaxResult.success("退出成功")));
 	}

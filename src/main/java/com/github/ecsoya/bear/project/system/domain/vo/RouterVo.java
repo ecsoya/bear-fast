@@ -40,6 +40,8 @@ public class RouterVo {
 	 * 路由参数：如 {"id": 1, "name": "ry"}
 	 */
 	private String query;
+	// 徽章查询器
+	private String badgeQuery;
 
 	/**
 	 * 当你一个路由下面的 children 声明的路由大于1个时，自动会变成嵌套的模式--如组件页面
@@ -126,5 +128,13 @@ public class RouterVo {
 
 	public void setChildren(List<RouterVo> children) {
 		this.children = children;
+	}
+
+	public String getBadgeQuery() {
+		return badgeQuery;
+	}
+
+	public void setBadgeQuery(String badgeQuery) {
+		this.badgeQuery = badgeQuery;
 	}
 }

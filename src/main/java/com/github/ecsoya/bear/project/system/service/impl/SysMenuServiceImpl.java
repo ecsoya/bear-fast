@@ -160,6 +160,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
 			router.setPath(getRouterPath(menu));
 			router.setComponent(getComponent(menu));
 			router.setQuery(menu.getQuery());
+			router.setBadgeQuery(menu.getBadgeQuery());
 			router.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), StringUtils.equals("1", menu.getIsCache()),
 					menu.getPath()));
 			List<SysMenu> cMenus = menu.getChildren();
@@ -177,6 +178,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
 				children.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(),
 						StringUtils.equals("1", menu.getIsCache()), menu.getPath()));
 				children.setQuery(menu.getQuery());
+				children.setBadgeQuery(menu.getBadgeQuery());
 				childrenList.add(children);
 				router.setChildren(childrenList);
 			} else if (menu.getParentId().intValue() == 0 && isInnerLink(menu)) {

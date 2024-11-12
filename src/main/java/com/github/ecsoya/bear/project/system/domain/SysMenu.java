@@ -44,6 +44,9 @@ public class SysMenu extends BaseEntity {
 	/** 路由参数 */
 	private String query;
 
+	/** 徽章查询 */
+	private String badgeQuery;
+
 	/** 是否为外链（0是 1否） */
 	private String isFrame;
 
@@ -213,5 +216,13 @@ public class SysMenu extends BaseEntity {
 				.append("createBy", getCreateBy()).append("createTime", getCreateTime())
 				.append("updateBy", getUpdateBy()).append("updateTime", getUpdateTime()).append("remark", getRemark())
 				.toString();
+	}
+
+	public String getBadgeQuery() {
+		return badgeQuery;
+	}
+
+	public void setBadgeQuery(String badgeQuery) {
+		this.badgeQuery = badgeQuery;
 	}
 }

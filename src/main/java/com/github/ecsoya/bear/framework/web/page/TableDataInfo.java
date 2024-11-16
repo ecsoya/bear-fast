@@ -23,6 +23,9 @@ public class TableDataInfo implements Serializable {
 	/** 消息内容 */
 	private String msg;
 
+	// 额外的内容
+	private Object summary;
+
 	/**
 	 * 表格数据对象
 	 */
@@ -70,5 +73,13 @@ public class TableDataInfo implements Serializable {
 
 	public void setMsg(String msg) {
 		this.msg = msg;
+	}
+
+	public Object getSummary() {
+		return summary;
+	}
+
+	public void setSummary(Object summary) {
+		this.summary = summary;
 	}
 }

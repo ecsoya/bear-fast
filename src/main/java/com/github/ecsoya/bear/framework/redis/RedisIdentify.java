@@ -3,6 +3,7 @@ package com.github.ecsoya.bear.framework.redis;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,19 +28,21 @@ public class RedisIdentify {
 	public static String generate(String prefix, int length) {
 		StringBuffer buffer = new StringBuffer();
 		if (prefix != null) {
-			buffer.append(buffer);
+			buffer.append(prefix);
 		}
 
 		String now = DateUtils.dateTimeNow("yyMMdd");
 		buffer.append(now);
 
-		Long increment = redisTemplate.opsForValue().increment(KEY_ID, 1);
+		String key = String.format("%s:%s", KEY_ID, Optional.ofNullable(prefix).orElse(""));
 
-		Long expire = redisTemplate.getExpire(KEY_ID, TimeUnit.SECONDS);
+		Long increment = redisTemplate.opsForValue().increment(key, 1);
+
+		Long expire = redisTemplate.getExpire(key, TimeUnit.SECONDS);
 		if (expire == -1) {
 			LocalDateTime endOfDay = LocalDate.now().atTime(23, 59, 59);
 			long secondsToMidnight = LocalDateTime.now().until(endOfDay, ChronoUnit.SECONDS);
-			redisTemplate.expire(KEY_ID, secondsToMidnight, TimeUnit.SECONDS);
+			redisTemplate.expire(key, secondsToMidnight, TimeUnit.SECONDS);
 		}
 		String format = "%0" + length + "d";
 

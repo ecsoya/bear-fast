@@ -162,7 +162,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
 			router.setQuery(menu.getQuery());
 			router.setBadgeQuery(menu.getBadgeQuery());
 			router.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), StringUtils.equals("1", menu.getIsCache()),
-					menu.getPath()));
+					menu.getPath(), menu.getOrderNum()));
 			List<SysMenu> cMenus = menu.getChildren();
 			if (!cMenus.isEmpty() && cMenus.size() > 0 && UserConstants.TYPE_DIR.equals(menu.getMenuType())) {
 				router.setAlwaysShow(true);
@@ -176,13 +176,13 @@ public class SysMenuServiceImpl implements ISysMenuService {
 				children.setComponent(menu.getComponent());
 				children.setName(getRouteName(parent, menu));
 				children.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(),
-						StringUtils.equals("1", menu.getIsCache()), menu.getPath()));
+						StringUtils.equals("1", menu.getIsCache()), menu.getPath(), menu.getOrderNum()));
 				children.setQuery(menu.getQuery());
 				children.setBadgeQuery(menu.getBadgeQuery());
 				childrenList.add(children);
 				router.setChildren(childrenList);
 			} else if (menu.getParentId().intValue() == 0 && isInnerLink(menu)) {
-				router.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon()));
+				router.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), menu.getOrderNum()));
 				router.setPath("/");
 				List<RouterVo> childrenList = new ArrayList<RouterVo>();
 				RouterVo children = new RouterVo();
@@ -190,7 +190,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
 				children.setPath(routerPath);
 				children.setComponent(UserConstants.INNER_LINK);
 				children.setName(StringUtils.capitalize(routerPath));
-				children.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), menu.getPath()));
+				children.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), menu.getPath(), menu.getOrderNum()));
 				childrenList.add(children);
 				router.setChildren(childrenList);
 			}

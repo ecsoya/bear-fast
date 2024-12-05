@@ -28,33 +28,39 @@ public class MetaVo {
 	 */
 	private String link;
 
+	private Integer index;
+
 	public MetaVo() {
 	}
 
-	public MetaVo(String title, String icon) {
+	public MetaVo(String title, String icon, Integer index) {
 		this.title = title;
 		this.icon = icon;
+		this.index = index;
 	}
 
-	public MetaVo(String title, String icon, boolean noCache) {
+	public MetaVo(String title, String icon, boolean noCache, Integer index) {
 		this.title = title;
 		this.icon = icon;
 		this.noCache = noCache;
+		this.index = index;
 	}
 
-	public MetaVo(String title, String icon, String link) {
+	public MetaVo(String title, String icon, String link, Integer index) {
 		this.title = title;
 		this.icon = icon;
 		this.link = link;
+		this.index = index;
 	}
 
-	public MetaVo(String title, String icon, boolean noCache, String link) {
+	public MetaVo(String title, String icon, boolean noCache, String link, Integer index) {
 		this.title = title;
 		this.icon = icon;
 		this.noCache = noCache;
 		if (StringUtils.ishttp(link)) {
 			this.link = link;
 		}
+		this.index = index;
 	}
 
 	public boolean isNoCache() {
@@ -87,5 +93,13 @@ public class MetaVo {
 
 	public void setLink(String link) {
 		this.link = link;
+	}
+
+	public Integer getIndex() {
+		return index;
+	}
+
+	public void setIndex(Integer index) {
+		this.index = index;
 	}
 }

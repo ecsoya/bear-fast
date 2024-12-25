@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<resultMap type="SysLogininfor" id="SysLogininforResult">
 		<id     property="infoId"        column="info_id"           />
 		<result property="userName"      column="user_name"         />
+		<result property="nickName"      column="nick_name"         />
 		<result property="status"        column="status"            />
 		<result property="ipaddr"        column="ipaddr"            />
 		<result property="loginLocation" column="login_location"    />
@@ -22,7 +23,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<select id="selectLogininforList" parameterType="SysLogininfor" resultMap="SysLogininforResult">
-		select info_id, user_name, ipaddr, login_location, browser, os, status, msg, login_time from sys_logininfor
+		select a.info_id, a.user_name, a.ipaddr, a.login_location, a.browser, a.os, a.status, a.msg, a.login_time, b.nick_name from sys_logininfor a
+		left join (select user_name as bid, nick_name from sys_user) as b on a.user_name=b.bid
 		<where>
 			<if test="ipaddr != null and ipaddr != ''">
 				AND ipaddr like concat('%', #{ipaddr}, '%')
@@ -32,6 +34,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 			<if test="userName != null and userName != ''">
 				AND user_name like concat('%', #{userName}, '%')
+			</if>
+			<if test="nickName != null and nickName != ''">
+				AND nick_name like concat('%', #{nickName}, '%')
 			</if>
 			<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
 				AND login_time &gt;= #{params.beginTime}

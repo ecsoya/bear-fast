@@ -74,6 +74,7 @@ public class SysUserOnlineServiceImpl implements ISysUserOnlineService {
 		SysUserOnline sysUserOnline = new SysUserOnline();
 		sysUserOnline.setTokenId(user.getToken());
 		sysUserOnline.setUserName(user.getUsername());
+		sysUserOnline.setNickName(user.getNickName());
 		sysUserOnline.setIpaddr(user.getIpaddr());
 		sysUserOnline.setLoginLocation(user.getLoginLocation());
 		sysUserOnline.setBrowser(user.getBrowser());

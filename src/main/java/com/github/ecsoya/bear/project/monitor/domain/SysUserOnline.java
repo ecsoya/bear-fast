@@ -14,6 +14,7 @@ public class SysUserOnline {
 
 	/** 用户名称 */
 	private String userName;
+	private String nickName;
 
 	/** 登录IP地址 */
 	private String ipaddr;
@@ -92,5 +93,13 @@ public class SysUserOnline {
 
 	public void setLoginTime(Long loginTime) {
 		this.loginTime = loginTime;
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
 	}
 }

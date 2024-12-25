@@ -45,6 +45,7 @@ public class SysOperLog extends BaseEntity {
 	/** 操作人员 */
 	@Excel(name = "操作人员")
 	private String operName;
+	private String nickName;
 
 	/** 部门名称 */
 	@Excel(name = "部门名称")
@@ -229,5 +230,13 @@ public class SysOperLog extends BaseEntity {
 
 	public void setCostTime(Long costTime) {
 		this.costTime = costTime;
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
 	}
 }

@@ -22,6 +22,7 @@ public class SysLogininfor extends BaseEntity {
 	/** 用户账号 */
 	@Excel(name = "用户账号")
 	private String userName;
+	private String nickName;
 
 	/** 登录状态 0成功 1失败 */
 	@Excel(name = "登录状态", readConverterExp = "0=成功,1=失败")
@@ -122,5 +123,13 @@ public class SysLogininfor extends BaseEntity {
 
 	public void setLoginTime(Date loginTime) {
 		this.loginTime = loginTime;
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
 	}
 }

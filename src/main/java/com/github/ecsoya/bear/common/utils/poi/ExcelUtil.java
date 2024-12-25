@@ -355,7 +355,7 @@ public class ExcelUtil<T> {
 			for (int i = 0; i < heard.getPhysicalNumberOfCells(); i++) {
 				Cell cell = heard.getCell(i);
 				if (StringUtils.isNotNull(cell)) {
-					String value = this.getCellValue(heard, i).toString();
+					String value = StringUtils.trimToNull(this.getCellValue(heard, i).toString());
 					cellMap.put(value, i);
 				} else {
 					cellMap.put(null, i);
@@ -398,7 +398,7 @@ public class ExcelUtil<T> {
 							if (StringUtils.isNotEmpty(dateFormat)) {
 								val = parseDateToStr(dateFormat, val);
 							} else {
-								val = Convert.toStr(val);
+								val = StringUtils.trimToEmpty(s);
 							}
 						}
 					} else if ((Integer.TYPE == fieldType || Integer.class == fieldType)

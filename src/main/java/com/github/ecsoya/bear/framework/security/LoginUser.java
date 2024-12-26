@@ -73,6 +73,9 @@ public class LoginUser implements UserDetails {
 	 */
 	private SysUser user;
 
+	// 其他信息
+	private Object data;
+
 	public LoginUser() {
 	}
 
@@ -236,5 +239,13 @@ public class LoginUser implements UserDetails {
 
 	public String getNickName() {
 		return Optional.ofNullable(getUser()).map(t -> t.getNickName()).orElse(null);
+	}
+
+	public Object getData() {
+		return data;
+	}
+
+	public void setData(Object data) {
+		this.data = data;
 	}
 }

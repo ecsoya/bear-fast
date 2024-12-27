@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 
+import com.github.ecsoya.bear.common.utils.poi.ExcelComboProvider;
 import com.github.ecsoya.bear.common.utils.poi.ExcelHandlerAdapter;
 
 /**
@@ -88,6 +89,8 @@ public @interface Excel {
 	 * 设置只能选择不能输入的列内容.
 	 */
 	public String[] combo() default {};
+
+	public Class<?> comboPrivider() default ExcelComboProvider.class;
 
 	/**
 	 * 是否需要纵向合并单元格,应对需求:含有list集合单元格)

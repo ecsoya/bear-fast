@@ -897,15 +897,35 @@ public class ExcelUtil<T> {
 
 		if (attr.unique()) {
 			setUniqueDataValidation(attr, row, column);
-		} else if (StringUtils.isNotEmpty(attr.prompt()) || attr.combo().length > 0) {
-			if (attr.combo().length > 15 || StringUtils.join(attr.combo()).length() > 255) {
-				// 如果下拉数大于15或字符串长度大于255，则使用一个新sheet存储，避免生成的模板下拉值获取不到
-				setXSSFValidationWithHidden(sheet, attr.combo(), attr.prompt(), 1, 100, column, column);
-			} else {
-				// 提示信息或只能选择不能输入的列内容.
-				setPromptOrValidation(sheet, attr.combo(), attr.prompt(), 1, 100, column, column);
+		} else {
+			String[] combo = getCombo(attr);
+			if (StringUtils.isNotEmpty(attr.prompt()) || combo.length > 0) {
+				if (combo.length > 15 || StringUtils.join(combo).length() > 255) {
+					// 如果下拉数大于15或字符串长度大于255，则使用一个新sheet存储，避免生成的模板下拉值获取不到
+					setXSSFValidationWithHidden(sheet, combo, attr.prompt(), 1, 100, column, column);
+				} else {
+					// 提示信息或只能选择不能输入的列内容.
+					setPromptOrValidation(sheet, combo, attr.prompt(), 1, 100, column, column);
+				}
 			}
 		}
+	}
+
+	private String[] getCombo(Excel attr) {
+		String[] combo = attr.combo();
+		if (combo != null && combo.length > 0) {
+			return combo;
+		}
+		if (attr.comboPrivider() != ExcelComboProvider.class) {
+			try {
+				Object instance = attr.comboPrivider().newInstance();
+				Method formatMethod = attr.comboPrivider().getMethod("getCombo");
+				combo = (String[]) formatMethod.invoke(instance);
+			} catch (Exception e) {
+				log.warn("不能格式化数据 " + attr.comboPrivider(), e.getMessage());
+			}
+		}
+		return combo == null ? new String[0] : combo;
 	}
 
 	private void setUniqueDataValidation(Excel attr, Row row, int column) {

@@ -398,7 +398,7 @@ public class ExcelUtil<T> {
 							if (StringUtils.isNotEmpty(dateFormat)) {
 								val = parseDateToStr(dateFormat, val);
 							} else {
-								val = StringUtils.trimToEmpty(s);
+								val = StringUtils.trimToNull(s);
 							}
 						}
 					} else if ((Integer.TYPE == fieldType || Integer.class == fieldType)

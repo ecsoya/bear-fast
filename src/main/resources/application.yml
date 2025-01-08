@@ -153,7 +153,7 @@ gen:
   
 threads:
   pool:
-    core: 50
-    max: 200
+    core: 100
+    max: 400
     queue: 1000
-    keepAlive: 300
+    keepAlive: 600

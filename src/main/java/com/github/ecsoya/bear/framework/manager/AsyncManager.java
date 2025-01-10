@@ -67,7 +67,7 @@ public class AsyncManager {
 			// 调用线程池操作，线程不足会抛出异常，然后让Java接手执行。
 			Runnable wrapper = () -> {
 				log.info("async execute(" + now + ") started");
-				task.run();
+				CompletableFuture.runAsync(task);
 				log.info("async execute(" + now + ") finished, used");
 			};
 			threadPoolExecutor.execute(wrapper);

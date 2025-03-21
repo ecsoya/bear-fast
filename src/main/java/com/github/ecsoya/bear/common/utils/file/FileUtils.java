@@ -10,9 +10,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -21,6 +18,9 @@ import com.github.ecsoya.bear.common.utils.DateUtils;
 import com.github.ecsoya.bear.common.utils.StringUtils;
 import com.github.ecsoya.bear.common.utils.uuid.IdUtils;
 import com.github.ecsoya.bear.framework.config.GlobalConfig;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 文件处理工具类

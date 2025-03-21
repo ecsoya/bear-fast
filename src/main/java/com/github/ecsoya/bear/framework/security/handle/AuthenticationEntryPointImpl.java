@@ -3,9 +3,6 @@ package com.github.ecsoya.bear.framework.security.handle;
 import java.io.IOException;
 import java.io.Serializable;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -15,6 +12,9 @@ import com.alibaba.fastjson2.JSON;
 import com.github.ecsoya.bear.common.utils.ServletUtils;
 import com.github.ecsoya.bear.common.utils.StringUtils;
 import com.github.ecsoya.bear.framework.web.domain.AjaxResult;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 认证失败处理类 返回未授权

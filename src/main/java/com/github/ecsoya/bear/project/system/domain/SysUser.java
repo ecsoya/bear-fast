@@ -3,10 +3,6 @@ package com.github.ecsoya.bear.project.system.domain;
 import java.util.Date;
 import java.util.List;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -16,6 +12,10 @@ import com.github.ecsoya.bear.framework.aspectj.lang.annotation.Excel.ColumnType
 import com.github.ecsoya.bear.framework.aspectj.lang.annotation.Excel.Type;
 import com.github.ecsoya.bear.framework.aspectj.lang.annotation.Excels;
 import com.github.ecsoya.bear.framework.web.domain.BaseEntity;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 /**
  * 用户对象 sys_user

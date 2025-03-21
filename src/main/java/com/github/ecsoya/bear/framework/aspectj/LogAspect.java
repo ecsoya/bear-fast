@@ -3,9 +3,6 @@ package com.github.ecsoya.bear.framework.aspectj;
 import java.util.Collection;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -32,6 +29,9 @@ import com.github.ecsoya.bear.framework.manager.AsyncManager;
 import com.github.ecsoya.bear.framework.manager.factory.AsyncFactory;
 import com.github.ecsoya.bear.framework.security.LoginUser;
 import com.github.ecsoya.bear.project.monitor.domain.SysOperLog;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 操作日志记录处理

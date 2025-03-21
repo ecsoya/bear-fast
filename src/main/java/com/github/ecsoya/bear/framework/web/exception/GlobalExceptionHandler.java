@@ -3,8 +3,6 @@ package com.github.ecsoya.bear.framework.web.exception;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -23,6 +21,8 @@ import com.github.ecsoya.bear.common.exception.DemoModeException;
 import com.github.ecsoya.bear.common.exception.ServiceException;
 import com.github.ecsoya.bear.common.utils.StringUtils;
 import com.github.ecsoya.bear.framework.web.domain.AjaxResult;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 全局异常处理器

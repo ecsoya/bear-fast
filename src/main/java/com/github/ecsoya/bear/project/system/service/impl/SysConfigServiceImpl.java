@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +16,8 @@ import com.github.ecsoya.bear.framework.redis.RedisCache;
 import com.github.ecsoya.bear.project.system.domain.SysConfig;
 import com.github.ecsoya.bear.project.system.mapper.SysConfigMapper;
 import com.github.ecsoya.bear.project.system.service.ISysConfigService;
+
+import jakarta.annotation.PostConstruct;
 
 /**
  * 参数配置 服务层实现

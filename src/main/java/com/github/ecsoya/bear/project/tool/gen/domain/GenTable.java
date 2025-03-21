@@ -2,14 +2,14 @@ package com.github.ecsoya.bear.project.tool.gen.domain;
 
 import java.util.List;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.github.ecsoya.bear.common.constant.GenConstants;
 import com.github.ecsoya.bear.common.utils.StringUtils;
 import com.github.ecsoya.bear.framework.web.domain.BaseEntity;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * 业务表 gen_table

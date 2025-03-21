@@ -51,6 +51,11 @@ public class DruidProperties {
 	@Value("${spring.datasource.druid.testOnReturn}")
 	private boolean testOnReturn;
 
+	@Value("${spring.datasource.druid.poolPreparedStatements}")
+	private boolean poolPreparedStatements;
+	@Value("${spring.datasource.druid.maxPoolPreparedStatementPerConnectionSize}")
+	private int maxPoolPreparedStatementPerConnectionSize;
+
 	public DruidDataSource dataSource(DruidDataSource datasource) {
 		/** 配置初始化大小、最小、最大 */
 		datasource.setInitialSize(initialSize);
@@ -86,6 +91,10 @@ public class DruidProperties {
 		datasource.setTestOnBorrow(testOnBorrow);
 		/** 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。 */
 		datasource.setTestOnReturn(testOnReturn);
+
+		// 池化
+		datasource.setPoolPreparedStatements(poolPreparedStatements);
+		datasource.setMaxPoolPreparedStatementPerConnectionSize(maxPoolPreparedStatementPerConnectionSize);
 		return datasource;
 	}
 }

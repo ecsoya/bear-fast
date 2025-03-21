@@ -3,8 +3,6 @@ package com.github.ecsoya.bear.project.system.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,6 +32,8 @@ import com.github.ecsoya.bear.project.system.service.ISysDeptService;
 import com.github.ecsoya.bear.project.system.service.ISysPostService;
 import com.github.ecsoya.bear.project.system.service.ISysRoleService;
 import com.github.ecsoya.bear.project.system.service.ISysUserService;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 用户信息

@@ -1,14 +1,14 @@
 package com.github.ecsoya.bear.project.system.domain;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import com.github.ecsoya.bear.framework.aspectj.lang.annotation.Excel;
 import com.github.ecsoya.bear.framework.aspectj.lang.annotation.Excel.ColumnType;
 import com.github.ecsoya.bear.framework.web.domain.BaseEntity;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 /**
  * 参数配置表 sys_config

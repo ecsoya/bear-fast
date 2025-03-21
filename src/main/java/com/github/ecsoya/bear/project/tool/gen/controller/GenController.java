@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,6 +28,8 @@ import com.github.ecsoya.bear.project.tool.gen.domain.GenTable;
 import com.github.ecsoya.bear.project.tool.gen.domain.GenTableColumn;
 import com.github.ecsoya.bear.project.tool.gen.service.IGenTableColumnService;
 import com.github.ecsoya.bear.project.tool.gen.service.IGenTableService;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 代码生成 操作处理

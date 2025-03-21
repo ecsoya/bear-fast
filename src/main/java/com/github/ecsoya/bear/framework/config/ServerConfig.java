@@ -1,10 +1,10 @@
 package com.github.ecsoya.bear.framework.config;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.stereotype.Component;
 
 import com.github.ecsoya.bear.common.utils.ServletUtils;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 服务相关配置

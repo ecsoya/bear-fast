@@ -1,6 +1,6 @@
 package com.github.ecsoya.bear.framework.security;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * 用户登录对象

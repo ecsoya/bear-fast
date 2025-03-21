@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.validation.Validator;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +30,8 @@ import com.github.ecsoya.bear.project.system.mapper.SysUserPostMapper;
 import com.github.ecsoya.bear.project.system.mapper.SysUserRoleMapper;
 import com.github.ecsoya.bear.project.system.service.ISysConfigService;
 import com.github.ecsoya.bear.project.system.service.ISysUserService;
+
+import jakarta.validation.Validator;
 
 /**
  * 用户 业务层处理

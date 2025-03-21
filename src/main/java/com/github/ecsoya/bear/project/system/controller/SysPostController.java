@@ -2,8 +2,6 @@ package com.github.ecsoya.bear.project.system.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -24,6 +22,8 @@ import com.github.ecsoya.bear.framework.web.domain.AjaxResult;
 import com.github.ecsoya.bear.framework.web.page.TableDataInfo;
 import com.github.ecsoya.bear.project.system.domain.SysPost;
 import com.github.ecsoya.bear.project.system.service.ISysPostService;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 岗位信息操作处理

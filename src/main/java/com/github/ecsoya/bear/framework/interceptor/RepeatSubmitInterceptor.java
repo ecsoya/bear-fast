@@ -2,9 +2,6 @@ package com.github.ecsoya.bear.framework.interceptor;
 
 import java.lang.reflect.Method;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -15,6 +12,9 @@ import com.github.ecsoya.bear.common.utils.ServletUtils;
 import com.github.ecsoya.bear.common.utils.StringUtils;
 import com.github.ecsoya.bear.framework.interceptor.annotation.RepeatSubmit;
 import com.github.ecsoya.bear.framework.web.domain.AjaxResult;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 防止重复提交拦截器

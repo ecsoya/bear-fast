@@ -4,9 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import javax.annotation.Resource;
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +20,9 @@ import com.github.ecsoya.bear.framework.redis.RedisCache;
 import com.github.ecsoya.bear.framework.web.domain.AjaxResult;
 import com.github.ecsoya.bear.project.system.service.ISysConfigService;
 import com.google.code.kaptcha.Producer;
+
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 验证码操作处理

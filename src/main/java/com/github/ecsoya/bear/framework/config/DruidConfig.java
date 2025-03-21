@@ -4,11 +4,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.sql.DataSource;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -26,6 +21,12 @@ import com.github.ecsoya.bear.common.utils.spring.SpringUtils;
 import com.github.ecsoya.bear.framework.aspectj.lang.enums.DataSourceType;
 import com.github.ecsoya.bear.framework.config.properties.DruidProperties;
 import com.github.ecsoya.bear.framework.datasource.DynamicDataSource;
+
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 
 /**
  * druid 配置多数据源
@@ -89,7 +90,7 @@ public class DruidConfig {
 		// 创建filter进行过滤
 		Filter filter = new Filter() {
 			@Override
-			public void init(javax.servlet.FilterConfig filterConfig) throws ServletException {
+			public void init(jakarta.servlet.FilterConfig filterConfig) throws ServletException {
 			}
 
 			@Override

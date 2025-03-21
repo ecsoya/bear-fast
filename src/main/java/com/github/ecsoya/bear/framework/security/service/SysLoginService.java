@@ -1,7 +1,5 @@
 package com.github.ecsoya.bear.framework.security.service;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -29,6 +27,8 @@ import com.github.ecsoya.bear.framework.security.context.AuthenticationContextHo
 import com.github.ecsoya.bear.project.system.domain.SysUser;
 import com.github.ecsoya.bear.project.system.service.ISysConfigService;
 import com.github.ecsoya.bear.project.system.service.ISysUserService;
+
+import jakarta.annotation.Resource;
 
 /**
  * 登录校验方法

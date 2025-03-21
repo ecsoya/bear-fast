@@ -3,10 +3,10 @@ package com.github.ecsoya.bear.common.utils.ip;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.github.ecsoya.bear.common.utils.ServletUtils;
 import com.github.ecsoya.bear.common.utils.StringUtils;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 获取IP方法

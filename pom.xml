@@ -6,7 +6,7 @@
 
 	<groupId>com.github.ecsoya.bear</groupId>
 	<artifactId>bear-fast</artifactId>
-	<version>v2.0.0</version>
+	<version>v2.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>bear-fast</name>
@@ -22,7 +22,9 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>17</java.version>
+		<maven.compiler.source>21</maven.compiler.source>
+    	<maven.compiler.target>21</maven.compiler.target>
+		<java.version>21</java.version>
 		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
 		<pagehelper.spring.boot.starter.version>2.1.0</pagehelper.spring.boot.starter.version>
 		<fastjson.version>2.0.39</fastjson.version>
@@ -253,6 +255,10 @@
 				<enabled>true</enabled>
 			</releases>
 		</repository>
+		<repository>
+	      <id>Central Repository</id>
+	      <url>https://repo1.maven.org/maven2/</url>
+	    </repository>
 	</repositories>
 
 	<pluginRepositories>

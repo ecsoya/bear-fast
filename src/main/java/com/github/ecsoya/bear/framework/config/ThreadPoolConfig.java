@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.github.ecsoya.bear.common.utils.Threads;
+import com.github.ecsoya.bear.framework.config.properties.DataSourceAwareTaskDecorator;
 
 /**
  * 线程池配置
@@ -44,6 +45,7 @@ public class ThreadPoolConfig {
 		executor.setKeepAliveSeconds(keepAliveSeconds);
 		// 线程池对拒绝任务(无线程可用)的处理策略
 		executor.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());
+		executor.setTaskDecorator(new DataSourceAwareTaskDecorator());
 		return executor;
 	}
 
@@ -52,7 +54,7 @@ public class ThreadPoolConfig {
 	 */
 	@Bean(name = "scheduledExecutorService")
 	protected ScheduledExecutorService scheduledExecutorService() {
-		return new ScheduledThreadPoolExecutor(corePoolSize,
+		ScheduledThreadPoolExecutor service = new ScheduledThreadPoolExecutor(corePoolSize,
 				new BasicThreadFactory.Builder().namingPattern("schedule-pool-%d").daemon(true).build(),
 				new ThreadPoolExecutor.CallerRunsPolicy()) {
 			@Override
@@ -61,5 +63,6 @@ public class ThreadPoolConfig {
 				Threads.printException(r, t);
 			}
 		};
+		return service;
 	}
 }

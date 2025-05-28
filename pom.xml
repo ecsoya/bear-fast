@@ -253,6 +253,12 @@
 			<artifactId>sevenzipjbinding-linux-amd64</artifactId>
 			<version>${sevenzip.version}</version>
 		</dependency>
+		<!-- TransmittableThreadLocal -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>transmittable-thread-local</artifactId>
+			<version>2.14.2</version>
+		</dependency>
 	</dependencies>
 
 	<repositories>

@@ -3,6 +3,8 @@ package com.github.ecsoya.bear.framework.config;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.DispatcherType;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -12,8 +14,6 @@ import org.springframework.context.annotation.Configuration;
 import com.github.ecsoya.bear.common.filter.RepeatableFilter;
 import com.github.ecsoya.bear.common.filter.XssFilter;
 import com.github.ecsoya.bear.common.utils.StringUtils;
-
-import jakarta.servlet.DispatcherType;
 
 /**
  * Filter配置

@@ -2,6 +2,8 @@ package com.github.ecsoya.bear.project.monitor.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,8 +22,6 @@ import com.github.ecsoya.bear.framework.web.domain.AjaxResult;
 import com.github.ecsoya.bear.framework.web.page.TableDataInfo;
 import com.github.ecsoya.bear.project.monitor.domain.SysLogininfor;
 import com.github.ecsoya.bear.project.monitor.service.ISysLogininforService;
-
-import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 系统访问记录

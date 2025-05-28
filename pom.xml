@@ -6,7 +6,7 @@
 
 	<groupId>com.github.ecsoya.bear</groupId>
 	<artifactId>bear-fast</artifactId>
-	<version>v2.0.1</version>
+	<version>v1.0.41</version>
 	<packaging>jar</packaging>
 
 	<name>bear-fast</name>
@@ -15,16 +15,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.3</version>
+		<version>2.5.15</version>
 		<relativePath />
 	</parent>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<maven.compiler.source>21</maven.compiler.source>
-    	<maven.compiler.target>21</maven.compiler.target>
-		<java.version>21</java.version>
+		<java.version>1.8</java.version>
 		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
 		<pagehelper.spring.boot.starter.version>2.1.0</pagehelper.spring.boot.starter.version>
 		<fastjson.version>2.0.39</fastjson.version>
@@ -106,6 +104,17 @@
 			<artifactId>pagehelper-spring-boot-starter</artifactId>
 			<version>${pagehelper.spring.boot.starter.version}</version>
 		</dependency>
+		
+		<dependency>
+	      <groupId>org.mybatis.spring.boot</groupId>
+	      <artifactId>mybatis-spring-boot-starter</artifactId>
+	      <version>2.2.2</version>
+	    </dependency>
+	    <dependency>
+	      <groupId>com.github.pagehelper</groupId>
+	      <artifactId>pagehelper</artifactId>
+	      <version>6.1.0</version>
+	    </dependency>
 
 		<!-- 阿里数据库连接池 -->
 		<dependency>
@@ -159,11 +168,11 @@
 			<version>${jwt.version}</version>
 		</dependency>
 
-		<!-- Jaxb 
+		<!-- Jaxb -->
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
-		</dependency>-->
+		</dependency>
 
 		<!-- 获取系统信息 -->
 		<dependency>
@@ -244,6 +253,12 @@
 			<artifactId>sevenzipjbinding-linux-amd64</artifactId>
 			<version>${sevenzip.version}</version>
 		</dependency>
+		<!-- TransmittableThreadLocal -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>transmittable-thread-local</artifactId>
+			<version>2.14.2</version>
+		</dependency>
 	</dependencies>
 
 	<repositories>
@@ -255,10 +270,6 @@
 				<enabled>true</enabled>
 			</releases>
 		</repository>
-		<repository>
-	      <id>Central Repository</id>
-	      <url>https://repo1.maven.org/maven2/</url>
-	    </repository>
 	</repositories>
 
 	<pluginRepositories>

@@ -11,6 +11,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.github.ecsoya.bear.common.utils.Threads;
 import com.github.ecsoya.bear.common.utils.spring.SpringUtils;
+import com.github.ecsoya.bear.framework.datasource.DynamicDataSourceContextHolder;
 
 /**
  * 异步任务管理器
@@ -22,7 +23,7 @@ public class AsyncManager {
 	/**
 	 * 操作延迟10毫秒
 	 */
-	private final int OPERATE_DELAY_TIME = 10;
+	private static final int OPERATE_DELAY_TIME = 10;
 
 	/**
 	 * 异步操作任务调度线程池
@@ -48,32 +49,66 @@ public class AsyncManager {
 	 * @param task 任务
 	 */
 	public void schedule(TimerTask task) {
+		long now = System.currentTimeMillis();
 		log.info("async schedule...");
-		if (executor.isShutdown() || executor.isTerminated()) {
-			CompletableFuture.runAsync(task);
-		} else {
-			try {
-				executor.schedule(task, OPERATE_DELAY_TIME, TimeUnit.MILLISECONDS);
-			} catch (Exception e) {
-				CompletableFuture.runAsync(task);
+		// 获取当前线程的数据源类型
+		String dataSourceType = DynamicDataSourceContextHolder.getDataSourceType();
+		// 包装任务，确保数据源上下文传递
+		TimerTask wrappedTask = new TimerTask() {
+			@Override
+			public void run() {
+				try {
+					if (dataSourceType != null) {
+						DynamicDataSourceContextHolder.setDataSourceType(dataSourceType);
+					}
+					task.run();
+				} finally {
+					DynamicDataSourceContextHolder.clearDataSourceType();
+				}
 			}
+		};
+
+		if (executor.isShutdown() || executor.isTerminated()) {
+			CompletableFuture.runAsync(wrappedTask);
+			return;
+		}
+
+		try {
+			executor.schedule(wrappedTask, OPERATE_DELAY_TIME, TimeUnit.MILLISECONDS);
+		} catch (Exception e) {
+			CompletableFuture.runAsync(wrappedTask);
 		}
 	}
 
+	/**
+	 * 执行任务
+	 *
+	 * @param task 任务
+	 */
 	public void execute(Runnable task) {
 		long now = System.currentTimeMillis();
 		log.info("async execute(" + now + ")");
-		try {
-			// 调用线程池操作，线程不足会抛出异常，然后让Java接手执行。
-			Runnable wrapper = () -> {
+		// 获取当前线程的数据源类型
+		String dataSourceType = DynamicDataSourceContextHolder.getDataSourceType();
+		// 包装任务，确保数据源上下文传递
+		Runnable wrapper = () -> {
+			try {
 				log.info("async execute(" + now + ") started");
-				CompletableFuture.runAsync(task);
+				if (dataSourceType != null) {
+					DynamicDataSourceContextHolder.setDataSourceType(dataSourceType);
+				}
+				task.run();
 				log.info("async execute(" + now + ") finished, used");
-			};
+			} finally {
+				DynamicDataSourceContextHolder.clearDataSourceType();
+			}
+		};
+
+		try {
 			threadPoolExecutor.execute(wrapper);
 		} catch (Exception e) {
 			log.error("async execute(" + now + ") failed", e);
-			CompletableFuture.runAsync(task);
+			CompletableFuture.runAsync(wrapper);
 		}
 	}
 

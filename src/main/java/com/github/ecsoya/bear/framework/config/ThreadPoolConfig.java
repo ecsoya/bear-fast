@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.github.ecsoya.bear.common.utils.Threads;
+import com.github.ecsoya.bear.framework.config.properties.DataSourceAwareTaskDecorator;
+import com.github.ecsoya.bear.framework.datasource.DynamicDataSourceContextHolder;
 
 /**
  * 线程池配置
@@ -44,6 +46,7 @@ public class ThreadPoolConfig {
 		executor.setKeepAliveSeconds(keepAliveSeconds);
 		// 线程池对拒绝任务(无线程可用)的处理策略
 		executor.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());
+		executor.setTaskDecorator(new DataSourceAwareTaskDecorator());
 		return executor;
 	}
 
@@ -52,14 +55,27 @@ public class ThreadPoolConfig {
 	 */
 	@Bean(name = "scheduledExecutorService")
 	protected ScheduledExecutorService scheduledExecutorService() {
-		return new ScheduledThreadPoolExecutor(corePoolSize,
+		ScheduledThreadPoolExecutor service = new ScheduledThreadPoolExecutor(corePoolSize,
 				new BasicThreadFactory.Builder().namingPattern("schedule-pool-%d").daemon(true).build(),
 				new ThreadPoolExecutor.CallerRunsPolicy()) {
 			@Override
+			protected void beforeExecute(Thread t, Runnable r) {
+				super.beforeExecute(t, r);
+				// 在任务执行前设置数据源上下文
+				String dataSourceType = DynamicDataSourceContextHolder.getDataSourceType();
+				if (dataSourceType != null) {
+					DynamicDataSourceContextHolder.setDataSourceType(dataSourceType);
+				}
+			}
+
+			@Override
 			protected void afterExecute(Runnable r, Throwable t) {
 				super.afterExecute(r, t);
+				// 在任务执行后清除数据源上下文
+				DynamicDataSourceContextHolder.clearDataSourceType();
 				Threads.printException(r, t);
 			}
 		};
+		return service;
 	}
 }

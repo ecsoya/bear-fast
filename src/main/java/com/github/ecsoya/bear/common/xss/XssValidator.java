@@ -3,10 +3,10 @@ package com.github.ecsoya.bear.common.xss;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.github.ecsoya.bear.common.utils.StringUtils;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
+import com.github.ecsoya.bear.common.utils.StringUtils;
 
 /**
  * 自定义xss校验注解实现

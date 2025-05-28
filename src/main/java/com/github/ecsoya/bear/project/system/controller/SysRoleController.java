@@ -2,6 +2,8 @@ package com.github.ecsoya.bear.project.system.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -31,8 +33,6 @@ import com.github.ecsoya.bear.project.system.domain.SysUserRole;
 import com.github.ecsoya.bear.project.system.service.ISysDeptService;
 import com.github.ecsoya.bear.project.system.service.ISysRoleService;
 import com.github.ecsoya.bear.project.system.service.ISysUserService;
-
-import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 角色信息
